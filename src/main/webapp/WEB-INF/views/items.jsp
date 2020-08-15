@@ -11,7 +11,17 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-12">
-                    <h3>Listado de Items</h3>
+                    <div class="row mb-3 border-bottom">
+                        <div class="col-10">
+                            <h3>Listado de Items</h3>
+                        </div>
+
+                        <div class="col-2 text-right">
+                            <button type="button" class="btn btn-sm btn-primary" data-action="add" data-member="item">
+                                <i class="fas fa-plus-square fa-fw"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
