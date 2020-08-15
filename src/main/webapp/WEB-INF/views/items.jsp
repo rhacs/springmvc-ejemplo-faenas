@@ -23,6 +23,10 @@
                         </div>
                     </div>
 
+                    <core:if test="${not empty param.wrongid}">
+                    <div class="alert mb-3 alert-warning">No existe el Item con el identificador numérico <strong>${param.wrongid}</strong></div>
+                    </core:if>
+
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <caption class="text-right">Cantidad de registros: ${items != null ? items.size() : '0'}</caption>
