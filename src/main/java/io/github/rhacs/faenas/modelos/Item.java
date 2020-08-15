@@ -79,6 +79,8 @@ public class Item {
      * Crea una nueva instancia vacía del objeto {@link Item}
      */
     public Item() {
+        stock = 0L;
+        precioUnitario = 1L;
         detalles = new HashSet<>();
     }
 
