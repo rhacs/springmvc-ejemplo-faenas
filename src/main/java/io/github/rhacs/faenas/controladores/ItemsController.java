@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.github.rhacs.faenas.modelos.Item;
+import io.github.rhacs.faenas.modelos.Proveedor;
 import io.github.rhacs.faenas.repositorios.ItemsRepositorio;
+import io.github.rhacs.faenas.repositorios.ProveedoresRepositorio;
 
 @Controller
 @RequestMapping(path = "/items")
@@ -40,6 +42,13 @@ public class ItemsController {
      */
     @Autowired
     private ItemsRepositorio itemsRepositorio;
+
+    /**
+     * Objeto {@link ProveedoresRepositorio} que contiene los métodos de
+     * manipulación para la tabla de {@link Proveedor}es
+     */
+    @Autowired
+    private ProveedoresRepositorio proveedoresRepositorio;
 
     // Solicitudes GET
     // -----------------------------------------------------------------------------------------
@@ -106,8 +115,12 @@ public class ItemsController {
 
         logger.info("Mostrando el formulario para el Item: {}", item);
 
-        // Agregar item al modelo
+        // Buscar todos los proveedores
+        List<Proveedor> proveedores = proveedoresRepositorio.findAll(Sort.by("nombre"));
+
+        // Agregar objetos al modelo
         modelo.addAttribute("item", item);
+        modelo.addAttribute("proveedores", proveedores);
 
         // Devolver vista
         return "items.form";
