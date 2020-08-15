@@ -16,4 +16,6 @@
             integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ=="
             crossorigin="anonymous"></script>
 
+        <<script type="text/javascript" src="${pageContext.request.contextPath}/res/js/script.js"></script>
+
         <!-- /Dependencias JavaScript -->
