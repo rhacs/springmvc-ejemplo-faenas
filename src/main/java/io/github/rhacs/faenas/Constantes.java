@@ -41,6 +41,24 @@ public class Constantes {
      */
     public static final String SECUENCIA_FAENAS = TABLA_FAENAS + "_seq";
 
+    // Columnas
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Nombre del identificador numérico para la tabla {@link Proveedor}
+     */
+    public static final String PROVEEDOR_ID = "proveedor_id";
+
+    /**
+     * Nombre del identificador numérico para la tabla {@link Item}
+     */
+    public static final String ITEM_ID = "item_id";
+
+    /**
+     * Nombre del identificador numérico para la tabla {@link Faena}
+     */
+    public static final String FAENA_ID = "faena_id";
+
     // Constructores
     // -----------------------------------------------------------------------------------------
 
