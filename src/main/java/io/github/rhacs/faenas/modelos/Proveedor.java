@@ -46,8 +46,8 @@ public class Proveedor {
      * Rol Único Tributario, sin dígito verificador, del {@link Proveedor}
      */
     @NotNull
-    @Min(value = 8)
-    @Max(value = 8)
+    @Min(value = 10000000)
+    @Max(value = 99999999)
     @Column(nullable = false, unique = true)
     private Long rut;
 
