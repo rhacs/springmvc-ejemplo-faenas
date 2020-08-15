@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <!-- Título de la página -->
-        <title><core:out value="${titulo}" /></title>
+        <title><core:out default="Información de Faenas" value="${titulo}" /></title>
 
         <!-- Hojas de estilo -->
         <link rel="stylesheet"
