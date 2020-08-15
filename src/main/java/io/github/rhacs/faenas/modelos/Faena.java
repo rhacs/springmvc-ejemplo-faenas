@@ -2,12 +2,14 @@ package io.github.rhacs.faenas.modelos;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -66,6 +68,9 @@ public class Faena {
     @Column(nullable = false)
     private LocalDate fechaTermino;
 
+    @OneToMany(mappedBy = "faena")
+    private Set<Detalle> detalles;
+
     // Constructores
     // -----------------------------------------------------------------------------------------
 
@@ -84,14 +89,16 @@ public class Faena {
      * @param comuna       comuna
      * @param fechaInicio  fecha de inicio
      * @param fechaTermino fecha de término
+     * @param detalles     listado de {@link Detalle}s
      */
     public Faena(Long id, @NotEmpty @Size(min = 5) String descripcion, @NotEmpty @Size(min = 5) String comuna,
-            @NotNull LocalDate fechaInicio, @NotNull LocalDate fechaTermino) {
+            @NotNull LocalDate fechaInicio, @NotNull LocalDate fechaTermino, Set<Detalle> detalles) {
         this.id = id;
         this.descripcion = descripcion;
         this.comuna = comuna;
         this.fechaInicio = fechaInicio;
         this.fechaTermino = fechaTermino;
+        this.detalles = detalles;
     }
 
     // Getters
@@ -132,6 +139,13 @@ public class Faena {
         return fechaTermino;
     }
 
+    /**
+     * @return el listado de {@link Detalle}s
+     */
+    public Set<Detalle> getDetalles() {
+        return detalles;
+    }
+
     // Setters
     // -----------------------------------------------------------------------------------------
 
@@ -170,6 +184,13 @@ public class Faena {
         this.fechaTermino = fechaTermino;
     }
 
+    /**
+     * @param detalles el listado de {@link Detalle}s a establecer
+     */
+    public void setDetalles(Set<Detalle> detalles) {
+        this.detalles = detalles;
+    }
+
     // Herencias (Object)
     // -----------------------------------------------------------------------------------------
 
@@ -196,8 +217,8 @@ public class Faena {
 
     @Override
     public String toString() {
-        return String.format("Faena [id=%s, descripcion=%s, comuna=%s, fechaInicio=%s, fechaTermino=%s]", id,
-                descripcion, comuna, fechaInicio, fechaTermino);
+        return String.format("Faena [id=%s, descripcion=%s, comuna=%s, fechaInicio=%s, fechaTermino=%s, detalle=%s]",
+                id, descripcion, comuna, fechaInicio, fechaTermino, detalles);
     }
 
 }
