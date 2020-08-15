@@ -8,6 +8,7 @@ $(function() {
         // Obtener valores
         let accion = $(this).data('action');
         let miembro = $(this).data('member');
+        let id = $(this).data('id');
 
         // Filtrar acción
         if (accion === 'add') {
@@ -16,6 +17,9 @@ $(function() {
         } else if (accion === 'cancel') {
             // Volver atrás
             history.back();
+        } else if (accion === 'edit') {
+            // Redireccionar
+            $(location).attr('href', '/faenas/' + miembro + '/' + id + '/edit');
         }
     });
 });
