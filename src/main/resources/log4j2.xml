@@ -83,7 +83,7 @@
         <!-- Hibernate -->
         <Logger name="org.hibernate" level="info" additivity="false">
             <AppenderRef ref="consola" />
-            <AppenderRef ref="logSql" />
+            <AppenderRef ref="logFramework" />
         </Logger>
 
         <!-- Hibernate: Consultas SQL -->
