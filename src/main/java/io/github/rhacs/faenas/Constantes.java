@@ -20,6 +20,12 @@ public class Constantes {
      */
     public static final String TABLA_FAENAS = "faenas_faenas";
 
+    /**
+     * Nombre de la tabla que contiene la información de la relación entre la tabla
+     * de {@link Proveedor}es y la tabla {@link Item}s
+     */
+    public static final String TABLA_DETALLES = "faenas_detalles";
+
     // Secuencias
     // -----------------------------------------------------------------------------------------
 
