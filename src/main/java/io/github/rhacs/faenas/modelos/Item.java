@@ -1,6 +1,8 @@
 package io.github.rhacs.faenas.modelos;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -66,6 +69,9 @@ public class Item {
     @JoinColumn(name = Constantes.PROVEEDOR_ID)
     private Proveedor proveedor;
 
+    @OneToMany(mappedBy = "item")
+    private Set<Detalle> detalles;
+
     // Constructores
     // -----------------------------------------------------------------------------------------
 
@@ -73,7 +79,7 @@ public class Item {
      * Crea una nueva instancia vacía del objeto {@link Item}
      */
     public Item() {
-        // Constructor vacío
+        detalles = new HashSet<>();
     }
 
     /**
@@ -84,14 +90,16 @@ public class Item {
      * @param stock          cantidad restante en el inventario
      * @param precioUnitario precio unitario
      * @param proveedor      {@link Proveedor}
+     * @param detalles       listado de {@link Detalle}s
      */
     public Item(Long id, @NotEmpty @Size(min = 5) String descripcion, @NotNull @Min(0) Long stock,
-            @NotNull @Min(1) Long precioUnitario, Proveedor proveedor) {
+            @NotNull @Min(1) Long precioUnitario, Proveedor proveedor, Set<Detalle> detalles) {
         this.id = id;
         this.descripcion = descripcion;
         this.stock = stock;
         this.precioUnitario = precioUnitario;
         this.proveedor = proveedor;
+        this.detalles = detalles;
     }
 
     // Getters
@@ -132,6 +140,13 @@ public class Item {
         return proveedor;
     }
 
+    /**
+     * @return el listado de {@link Detalle}s
+     */
+    public Set<Detalle> getDetalles() {
+        return detalles;
+    }
+
     // Setters
     // -----------------------------------------------------------------------------------------
 
@@ -170,6 +185,13 @@ public class Item {
         this.proveedor = proveedor;
     }
 
+    /**
+     * @param detalles el listado de {@link Detalle}s a establecer
+     */
+    public void setDetalles(Set<Detalle> detalles) {
+        this.detalles = detalles;
+    }
+
     // Herencias (Object)
     // -----------------------------------------------------------------------------------------
 
@@ -196,8 +218,8 @@ public class Item {
 
     @Override
     public String toString() {
-        return String.format("Item [id=%s, descripcion=%s, stock=%s, precioUnitario=%s, proveedor=%s]", id, descripcion,
-                stock, precioUnitario, proveedor);
+        return String.format("Item [id=%s, descripcion=%s, stock=%s, precioUnitario=%s, proveedor=%s, detalles=%s]", id,
+                descripcion, stock, precioUnitario, proveedor, detalles);
     }
 
 }
