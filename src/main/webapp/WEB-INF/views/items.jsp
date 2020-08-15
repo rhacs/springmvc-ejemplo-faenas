@@ -44,7 +44,7 @@
                                 <core:choose>
                                     <core:when test="${items != null && items.size() > 0}">
                                         <core:forEach items="${items}" var="item">
-                                        <tr>
+                                        <tr role="button" data-action="edit" data-member="items" data-id="${item.getId()}">
                                             <th scope="row" class="text-nowrap">${item.getId()}</th>
                                             <td>${item.getDescripcion()}</td>
                                             <td class="text-nowrap text-right">${item.getStock()}</td>
