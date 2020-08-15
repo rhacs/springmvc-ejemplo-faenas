@@ -145,7 +145,7 @@ public class ItemsController {
      * @param modelo        objeto {@link Model} que contiene el modelo de la vista
      * @return un objeto {@link String} con la respuesta a la solicitud
      */
-    @PostMapping(path = { "/add", "/{itemid:^[0-9]+$/edit" })
+    @PostMapping(path = { "/add", "/{itemid:^[0-9]+$}/edit" })
     public String procesarFormulario(@PathVariable Optional<Long> itemid, @Valid Item item, HttpServletRequest request,
             BindingResult bindingResult, Model modelo) {
         logger.info("Solicitud POST: {}", request.getRequestURI());
