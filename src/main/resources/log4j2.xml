@@ -53,6 +53,16 @@
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
             </Policies>
         </RollingFile>
+
+        <!-- Archivo: SQL -->
+        <RollingFile name="logSql" fileName="${ruta}/sql.log"
+            filePattern="${ruta}/error_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${patron}" />
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
     </Appenders>
 
     <!-- Loggers -->
@@ -68,6 +78,18 @@
         <Logger name="org.springframework" level="error" additivity="false">
             <AppenderRef ref="consola" />
             <AppenderRef ref="logFramework" />
+        </Logger>
+
+        <!-- Hibernate -->
+        <Logger name="org.hibernate" level="info" additivity="false">
+            <AppenderRef ref="consola" />
+            <AppenderRef ref="logSql" />
+        </Logger>
+
+        <!-- Hibernate: Consultas SQL -->
+        <Logger name="org.hibernate.SQL" level="debug" additivity="false">
+            <AppenderRef ref="consola" />
+            <AppenderRef ref="logSql" />
         </Logger>
 
         <!-- Raíz -->
