@@ -2,6 +2,8 @@ package io.github.rhacs.faenas.controladores;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -16,6 +18,14 @@ import io.github.rhacs.faenas.repositorios.ItemsRepositorio;
 @Controller
 @RequestMapping(path = "/items")
 public class ItemsController {
+
+    // Constantes
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Objeto {@link Logger} que contiene los métodos de depuración
+     */
+    private static final Logger logger = LogManager.getLogger(ItemsController.class);
 
     // Atributos
     // -----------------------------------------------------------------------------------------
@@ -38,9 +48,15 @@ public class ItemsController {
      */
     @GetMapping
     public String verListado(Model modelo) {
+        // Depuración
+        logger.info("Solicitud GET: /items");
+
         // Buscar todos los items almacenados en el repositorio, ordenados por la
         // cantidad del stock y la descripción
         List<Item> items = itemsRepositorio.findAll(Sort.by(Direction.DESC, "stock", "descripcion"));
+
+        // Depuración
+        logger.info("Listado de Items: {}", items);
 
         // Agregar listado al modelo
         modelo.addAttribute("items", items);
