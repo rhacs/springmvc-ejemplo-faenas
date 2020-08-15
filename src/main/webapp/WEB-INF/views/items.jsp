@@ -31,6 +31,10 @@
                     <div class="alert alert-success mb-3">El registro del Item con el identificador <strong>${param.remid}</strong> ha sido eliminado correctamente</div>
                     </core:if>
 
+                    <core:if test="${not empty param.action}">
+                    <div class="alert alert-success mb-3">Se ${param.action == "add" ? "agregó" : "editó"} el registro correctamente</div>
+                    </core:if>
+
                     <div class="table-responsive">
                         <table class="table table-hover table-striped">
                             <caption class="text-right">Cantidad de registros: ${items != null ? items.size() : '0'}</caption>
