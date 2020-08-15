@@ -168,7 +168,7 @@ public class Detalle {
 
     @Override
     public String toString() {
-        return String.format("Detalle [id=%s, cantidad=%s, faena=%s, item=%s]", id, cantidad, faena, item);
+        return String.format("Detalle [id=%s, cantidad=%s]", id, cantidad, faena, item);
     }
 
 }
