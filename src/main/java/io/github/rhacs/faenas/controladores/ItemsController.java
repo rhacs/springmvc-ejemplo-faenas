@@ -3,6 +3,8 @@ package io.github.rhacs.faenas.controladores;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,22 +72,30 @@ public class ItemsController {
     /**
      * Muestra el formulario para agregar o editar un registro
      *
-     * @param itemid identificador numérico del {@link Item}
-     * @param modelo objeto {@link Model} que contiene el modelo de la vista
+     * @param itemid  identificador numérico del {@link Item}
+     * @param request objeto {@link HttpServletRequest} que contiene la información
+     *                de la solicitud que le envía el cliente al servlet
+     * @param modelo  objeto {@link Model} que contiene el modelo de la vista
      * @return un objeto {@link String} con la respuesta a la solicitud
      */
     @GetMapping(path = { "/add", "/{itemid:^[0-9]+$}/edit" })
-    public String verFormulario(@PathVariable Optional<Long> itemid, Model modelo) {
+    public String verFormulario(@PathVariable Optional<Long> itemid, HttpServletRequest request, Model modelo) {
+        logger.info("Solicitud GET: {}", request.getRequestURI());
+
         // Inicializar un nuevo item
         Item item = new Item();
 
         // Verificar si el itemid está presente en la URI
         if (itemid.isPresent()) {
+            logger.info("Buscando información del Item con el id: {}", itemid.get());
+
             // Buscar información del Item
             Optional<Item> itemExistente = itemsRepositorio.findById(itemid.get());
 
             // Verificar si el item no existe
             if (!itemExistente.isPresent()) {
+                logger.info("Item con el id {} no existe", itemid.get());
+
                 // Redireccionar
                 return "redirect:/items?wrongid=" + itemid.get();
             }
@@ -93,6 +103,8 @@ public class ItemsController {
             // Reemplazar el item
             item = itemExistente.get();
         }
+
+        logger.info("Mostrando el formulario para el Item: {}", item);
 
         // Agregar item al modelo
         modelo.addAttribute("item", item);
