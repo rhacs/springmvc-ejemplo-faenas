@@ -49,10 +49,36 @@
 
                                 <div class="form-group text-right mb-0">
                                     <button type="button" class="btn btn-secondary" data-action="cancel">Cancelar</button>
+                                    <core:if test="${not empty item.getId()}"><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eliminar">Eliminar</button></core:if>
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </div>
                             </form:form>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario eliminar -->
+        <div class="modal fade" id="eliminar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true" aria-labelledby="eliminarTitulo">
+            <div class="modal-dialog modial-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="eliminarTitulo">Confirmación</h5>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        ¿Está seguro de querer eliminar el registro para el Item <strong>${item.getDescripcion()}</strong>?
+                        <form id="gb" action="${pageContext.request.contextPath}/items/${item.getId()}/del" method="post"></form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" data-action="del">Eliminar</button>
                     </div>
                 </div>
             </div>
