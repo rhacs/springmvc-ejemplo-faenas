@@ -3,11 +3,13 @@ package io.github.rhacs.faenas.modelos;
 import java.util.Objects;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import javax.validation.constraints.Min;
@@ -17,37 +19,41 @@ import io.github.rhacs.faenas.Constantes;
 
 @Entity
 @Table(name = Constantes.TABLA_DETALLES)
+@SequenceGenerator(allocationSize = 1, initialValue = 1, name = Constantes.SECUENCIA_DETALLES)
 public class Detalle {
 
     // Atributos
     // -----------------------------------------------------------------------------------------
 
-    @EmbeddedId
-    private DetallePK id;
-
     /**
-     * Información de la {@link Faena}
+     * Identificador numérico del {@link Detalle}
      */
-    @ManyToOne(optional = false)
-    @MapsId(value = Constantes.FAENA_ID)
-    @JoinColumn(name = Constantes.FAENA_ID)
-    private Faena faena;
+    @Id
+    @GeneratedValue(generator = Constantes.SECUENCIA_DETALLES, strategy = GenerationType.SEQUENCE)
+    @Column(name = Constantes.DETALLE_ID)
+    private Long id;
 
     /**
-     * Información del {@link Item}
-     */
-    @ManyToOne(optional = false)
-    @MapsId(value = Constantes.ITEM_ID)
-    @JoinColumn(name = Constantes.ITEM_ID)
-    private Item item;
-
-    /**
-     * Cantidad del {@link Item}
+     * Cantidad que se utilizará del {@link Item}
      */
     @NotNull
     @Min(value = 1)
     @Column(nullable = false)
     private Long cantidad;
+
+    /**
+     * {@link Faena} a la que está relacionada el {@link Detalle}
+     */
+    @ManyToOne(optional = false)
+    @JoinColumn(name = Constantes.FAENA_ID)
+    private Faena faena;
+
+    /**
+     * {@link Item} al que está relacionado el {@link Detalle}
+     */
+    @ManyToOne(optional = false)
+    @JoinColumn(name = Constantes.ITEM_ID)
+    private Item item;
 
     // Constructores
     // -----------------------------------------------------------------------------------------
@@ -62,40 +68,26 @@ public class Detalle {
     /**
      * Crea una nueva instancia del objeto {@link Detalle}
      * 
-     * @param id
-     * @param faena    información de la {@link Faena}
-     * @param item     información del {@link Item}
+     * @param id       identificador numérico
      * @param cantidad cantidad
+     * @param faena    {@link Faena}
+     * @param item     {@link Item}
      */
-    public Detalle(DetallePK id, Faena faena, Item item, @NotNull @Min(1) Long cantidad) {
+    public Detalle(Long id, @NotNull @Min(1) Long cantidad, Faena faena, Item item) {
         this.id = id;
+        this.cantidad = cantidad;
         this.faena = faena;
         this.item = item;
-        this.cantidad = cantidad;
     }
 
     // Getters
     // -----------------------------------------------------------------------------------------
 
     /**
-     * @return el id
+     * @return el identificador numérico
      */
-    public DetallePK getId() {
+    public Long getId() {
         return id;
-    }
-
-    /**
-     * @return la información de la {@link Faena}
-     */
-    public Faena getFaena() {
-        return faena;
-    }
-
-    /**
-     * @return la información del {@link Item}
-     */
-    public Item getItem() {
-        return item;
     }
 
     /**
@@ -105,14 +97,35 @@ public class Detalle {
         return cantidad;
     }
 
+    /**
+     * @return la {@link Faena}
+     */
+    public Faena getFaena() {
+        return faena;
+    }
+
+    /**
+     * @return el {@link Item}
+     */
+    public Item getItem() {
+        return item;
+    }
+
     // Setters
     // -----------------------------------------------------------------------------------------
 
     /**
-     * @param id el identificador a establecer
+     * @param id el identificador numérico a establecer
      */
-    public void setId(DetallePK id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * @param cantidad la cantidad a establecer
+     */
+    public void setCantidad(Long cantidad) {
+        this.cantidad = cantidad;
     }
 
     /**
@@ -127,13 +140,6 @@ public class Detalle {
      */
     public void setItem(Item item) {
         this.item = item;
-    }
-
-    /**
-     * @param cantidad la cantidad a establecer
-     */
-    public void setCantidad(Long cantidad) {
-        this.cantidad = cantidad;
     }
 
     // Herencias (Object)
@@ -162,7 +168,7 @@ public class Detalle {
 
     @Override
     public String toString() {
-        return String.format("Detalle [id=%s, faena=%s, item=%s, cantidad=%s]", id, faena, item, cantidad);
+        return String.format("Detalle [id=%s, cantidad=%s, faena=%s, item=%s]", id, cantidad, faena, item);
     }
 
 }
