@@ -17,7 +17,7 @@
                         </div>
 
                         <div class="col-2 text-right">
-                            <button type="button" class="btn btn-sm btn-primary" data-action="add" data-member="item">
+                            <button type="button" class="btn btn-sm btn-primary" data-action="add" data-member="items">
                                 <i class="fas fa-plus-square fa-fw"></i>
                             </button>
                         </div>
