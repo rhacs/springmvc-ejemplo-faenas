@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -36,7 +37,7 @@ public class Proveedor {
     /**
      * Nombre o Razón Social del {@link Proveedor}
      */
-    @NotNull
+    @NotEmpty
     @Size(min = 5)
     @Column(nullable = false)
     private String nombre;
@@ -53,7 +54,7 @@ public class Proveedor {
     /**
      * Dirección de la casa matriz del {@link Proveedor}
      */
-    @NotNull
+    @NotEmpty
     @Size(min = 5)
     @Column(nullable = false)
     private String direccion;
@@ -61,7 +62,7 @@ public class Proveedor {
     /**
      * Comuna del {@link Proveedor}
      */
-    @NotNull
+    @NotEmpty
     @Size(min = 5)
     @Column(nullable = false)
     private String comuna;
