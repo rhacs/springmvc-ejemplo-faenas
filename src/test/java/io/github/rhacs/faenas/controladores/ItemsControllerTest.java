@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -36,6 +37,19 @@ class ItemsControllerTest {
             .andExpect(status().isOk())
             // Esperar que la vista retornada sea "items", según configurado en el controlador
             .andExpect(view().name("items"))
+            // Imprimir el resultado en consola
+            .andDo(print());
+    }
+
+    @Test
+    void verFormularioShouldShowItemFormView() throws Exception {
+        mvc
+            // Simular petición get
+            .perform(get("/items/add"))
+            // Esperar que el estado de la respuesta sea HttpStatus.OK
+            .andExpect(status().isOk())
+            // Esperar que la vista devuelta sea "items.form"
+            .andExpect(view().name("items.form"))
             // Imprimir el resultado en consola
             .andDo(print());
     }
