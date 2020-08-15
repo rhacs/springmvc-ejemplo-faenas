@@ -51,9 +51,9 @@ public class ItemsController {
         // Depuración
         logger.info("Solicitud GET: /items");
 
-        // Buscar todos los items almacenados en el repositorio, ordenados por la
-        // cantidad del stock y la descripción
-        List<Item> items = itemsRepositorio.findAll(Sort.by(Direction.DESC, "stock", "descripcion"));
+        // Buscar todos los items almacenados en el repositorio, ordenados por el precio
+        // unitario de forma descendente
+        List<Item> items = itemsRepositorio.findAll(Sort.by(Direction.DESC, "precioUnitario"));
 
         // Depuración
         logger.info("Listado de Items: {}", items);
