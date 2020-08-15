@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -129,6 +131,47 @@ public class ItemsController {
 
     // Solicitudes POST
     // -----------------------------------------------------------------------------------------
+
+    /**
+     * Procesa el formulario para agregar/editar un registro
+     * 
+     * @param itemid        identificador numérico del {@link Item}
+     * @param item          objeto {@link Item} con la información a agregar/editar
+     * @param request       objeto {@link HttpServletRequest} que contiene la
+     *                      información de la solicitud que le envía el cliente al
+     *                      servlet
+     * @param bindingResult objeto {@link BindingResult} que contiene los errores de
+     *                      validación
+     * @param modelo        objeto {@link Model} que contiene el modelo de la vista
+     * @return un objeto {@link String} con la respuesta a la solicitud
+     */
+    @PostMapping(path = { "/add", "/{itemid:^[0-9]+$/edit" })
+    public String procesarFormulario(@PathVariable Optional<Long> itemid, @Valid Item item, HttpServletRequest request,
+            BindingResult bindingResult, Model modelo) {
+        logger.info("Solicitud POST: {}", request.getRequestURI());
+
+        // Verificar si hay errores en el formulario
+        if (bindingResult.hasErrors()) {
+            logger.info("El formulario contiene errores: {}", bindingResult.getAllErrors());
+
+            // Buscar listado de proveedores
+            List<Proveedor> proveedores = proveedoresRepositorio.findAll(Sort.by("nombre"));
+
+            // Agregar proveedores al modelo
+            modelo.addAttribute("proveedores", proveedores);
+
+            // Mostrar vista
+            return "items.form";
+        }
+
+        // Guardar cambios/agregar registro
+        item = itemsRepositorio.save(item);
+
+        logger.info("Se {} el registro Item: {}", itemid.isPresent() ? "editó" : "agregó", item);
+
+        // Redireccionar al listado
+        return "redirect:/items?action=" + (itemid.isPresent() ? "edit" : "add");
+    }
 
     /**
      * Elimina un registro del repositorio, si existe
