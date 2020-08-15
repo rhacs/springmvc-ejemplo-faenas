@@ -13,6 +13,9 @@ $(function() {
         if (accion === 'add') {
             // Redireccionar
             $(location).attr('href', '/faenas/' + miembro + '/add');
+        } else if (accion === 'cancel') {
+            // Volver atrás
+            history.back();
         }
     });
 });
