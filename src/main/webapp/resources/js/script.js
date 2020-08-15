@@ -20,6 +20,9 @@ $(function() {
         } else if (accion === 'edit') {
             // Redireccionar
             $(location).attr('href', '/faenas/' + miembro + '/' + id + '/edit');
+        } else if (accion === 'del') {
+            $("#eliminar").modal('hide');
+            $("#gb").submit();
         }
     });
 });
