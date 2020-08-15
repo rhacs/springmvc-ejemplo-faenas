@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.github.rhacs.faenas.modelos.Item;
@@ -124,6 +125,43 @@ public class ItemsController {
 
         // Devolver vista
         return "items.form";
+    }
+
+    // Solicitudes POST
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Elimina un registro del repositorio, si existe
+     * 
+     * @param id      identificador numérico del {@link Item}
+     * @param request objeto {@link HttpServletRequest} que contiene la información
+     *                de la solicitud que envía el cliente al servlet
+     * @return un objeto {@link String} con la respuesta a la solicitud
+     */
+    @PostMapping(path = "/{id:^[0-9]$}/del")
+    public String eliminarRegistro(@PathVariable Long id, HttpServletRequest request) {
+        logger.info("Solicitud POST: {}", request.getRequestURI());
+
+        // Obtener información del registro
+        Optional<Item> item = itemsRepositorio.findById(id);
+
+        logger.info("Buscando información del Item {}", id);
+
+        // Verificar si existe
+        if (item.isPresent()) {
+            // Eliminar el registro
+            itemsRepositorio.delete(item.get());
+
+            logger.info("Registro eliminado: {}", item.get());
+
+            // Redireccionar
+            return "redirect:/items?remid=" + id;
+        }
+
+        logger.info("No se encontró el Item con el identificador {}", id);
+
+        // Redireccionar
+        return "redirect:/items?wrongid=" + id;
     }
 
 }
