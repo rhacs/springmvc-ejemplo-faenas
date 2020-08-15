@@ -73,8 +73,10 @@ CREATE TABLE faenas_detalles (
     CONSTRAINT fdetalles_pk PRIMARY KEY (detalle_id),
 
     -- Llaves foráneas
-    CONSTRAINT fdetalles_fk_faena FOREIGN KEY (faena_id) REFERENCES faenas_faenas (faena_id),
-    CONSTRAINT fdetalles_fk_item FOREIGN KEY (item_id) REFERENCES faenas_items (item_id)
+    CONSTRAINT fdetalles_fk_faena FOREIGN KEY (faena_id)
+        REFERENCES faenas_faenas (faena_id) ON DELETE CASCADE,
+    CONSTRAINT fdetalles_fk_item FOREIGN KEY (item_id)
+        REFERENCES faenas_items (item_id) ON DELETE CASCADE
 );
 
 -- Secuencia
