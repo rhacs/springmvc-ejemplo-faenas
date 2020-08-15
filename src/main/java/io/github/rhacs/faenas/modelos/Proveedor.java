@@ -30,7 +30,7 @@ public class Proveedor {
      */
     @Id
     @GeneratedValue(generator = Constantes.SECUENCIA_PROVEEDORES, strategy = GenerationType.SEQUENCE)
-    @Column(name = "proveedor_id")
+    @Column(name = Constantes.PROVEEDOR_ID)
     private Long id;
 
     /**
