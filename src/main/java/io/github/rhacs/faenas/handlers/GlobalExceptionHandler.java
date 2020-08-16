@@ -136,7 +136,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         // Crear respuesta
         ErrorResponse response = new ErrorResponse();
         response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
-        response.setMessage("El método " + ex.getMethod() + " no está disponible. Los métodos soportados son: "
+        response.setMessage("El método " + ex.getMethod()
+                + " no está permitido para el recurso requerido. Los métodos soportados son: "
                 + ex.getSupportedMethods());
 
         return ResponseEntity.status(response.getStatus()).body(response);
