@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -123,6 +124,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         response.setStatus(HttpStatus.NOT_FOUND.value());
         response.setMessage("No se ha encontrado un controlador para las peticiones " + ex.getHttpMethod() + " sobre "
                 + ex.getRequestURL());
+
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
+        logger.error(ex.getMessage());
+
+        // Crear respuesta
+        ErrorResponse response = new ErrorResponse();
+        response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+        response.setMessage("El método " + ex.getMethod() + " no está disponible. Los métodos soportados son: "
+                + ex.getSupportedMethods());
 
         return ResponseEntity.status(response.getStatus()).body(response);
     }
