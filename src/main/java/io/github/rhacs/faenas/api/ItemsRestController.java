@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -98,6 +100,30 @@ public class ItemsRestController {
 
         // Lanzar excepción
         throw new ElementNotFoundException(response);
+    }
+
+    // Solicitudes POST
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Agrega un nuevo registro al repositorio
+     * 
+     * @param request objeto {@link HttpServletRequest} que contiene la información
+     *                de la solicitud que le hace el cliente al servlet
+     * @param item    objeto {@link Item} con la información válida a agregar
+     * @return un objeto {@link Item} que representa al objeto guardado
+     */
+    @PostMapping
+    public Item agregarRegistro(HttpServletRequest request, @Valid Item item) {
+        logger.info("[API] Solicitud POST: {}", request.getRequestURI());
+
+        // Agregar registro al repositorio
+        item = itemsRepositorio.save(item);
+
+        logger.info("[API] Nuevo item agregado: {}", item);
+
+        // Devolver objeto guardado
+        return item;
     }
 
 }
