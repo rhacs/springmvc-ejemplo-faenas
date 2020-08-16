@@ -11,6 +11,13 @@ import io.github.rhacs.faenas.modelos.ErrorResponse;
 @RestControllerAdvice(basePackages = { "io.github.rhacs.faenas.api" })
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Maneja las excepciones {@link ElementNotFoundException}
+     * 
+     * @param e objeto {@link ElementNotFoundException} que contiene la información
+     *          del error
+     * @return un objeto {@link ResponseEntity} con la respuesta
+     */
     @ExceptionHandler(value = ElementNotFoundException.class)
     protected ResponseEntity<ErrorResponse> handleElementNotFoundException(ElementNotFoundException e) {
         return ResponseEntity.status(e.getResponse().getStatus()).body(e.getResponse());
