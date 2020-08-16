@@ -4,6 +4,12 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+
+import org.hibernate.validator.internal.engine.path.PathImpl;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -78,6 +84,40 @@ public class ErrorResponse {
      */
     public boolean addError(String campo, String mensaje, Object valorRechazado) {
         return errors.add(new ErrorDetail(campo, mensaje, valorRechazado));
+    }
+
+    /**
+     * Agrega un {@link FieldError} al listado
+     * 
+     * @param e objeto {@link FieldError} con la información del error
+     * @return {@code true} si el error fue agregado, {@code false} en cualquier
+     *         otro caso
+     */
+    public boolean addError(FieldError e) {
+        return errors.add(new ErrorDetail(e.getField(), e.getDefaultMessage(), e.getRejectedValue()));
+    }
+
+    /**
+     * Agrega un {@link ObjectError} al listado
+     * 
+     * @param e objeto {@link ObjectError} con la información del error
+     * @return {@code true} si el error fue agregado, {@code false} en cualquier
+     *         otro caso
+     */
+    public boolean addError(ObjectError e) {
+        return errors.add(new ErrorDetail(e.getObjectName(), e.getDefaultMessage(), null));
+    }
+
+    /**
+     * Agrega una {@link ConstraintViolation} al listado
+     * 
+     * @param e objeto {@link ConstraintViolation} con la información del error
+     * @return {@code true} si el error fue agregado, {@code false} en cualquier
+     *         otro caso
+     */
+    public boolean addError(ConstraintViolation<?> e) {
+        return errors.add(new ErrorDetail(((PathImpl) e.getPropertyPath()).getLeafNode().asString(), e.getMessage(),
+                e.getInvalidValue()));
     }
 
     // Getters
