@@ -4,10 +4,13 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import io.github.rhacs.faenas.excepciones.ElementNotFoundException;
@@ -63,6 +66,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         e.getConstraintViolations().forEach(response::addError);
 
         return ResponseEntity.status(status).body(response);
+    }
+
+    // Herencias (ResponseEntityExceptionHandler)
+    // -----------------------------------------------------------------------------------------
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+            HttpHeaders headers, HttpStatus status, WebRequest request) {
+        // Estado
+        HttpStatus responseStatus = HttpStatus.BAD_REQUEST;
+
+        // Crear respuesta
+        ErrorResponse response = new ErrorResponse();
+        response.setStatus(responseStatus.value());
+        response.setMessage("Error de Validación");
+
+        // Agregar errores al listado
+        ex.getBindingResult().getFieldErrors().forEach(response::addError);
+        ex.getBindingResult().getGlobalErrors().forEach(response::addError);
+
+        return ResponseEntity.status(responseStatus).body(response);
     }
 
 }
