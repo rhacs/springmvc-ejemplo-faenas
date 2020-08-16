@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -74,6 +75,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
+        logger.error(ex.getMessage());
+
         // Estado
         HttpStatus responseStatus = HttpStatus.BAD_REQUEST;
 
@@ -86,7 +89,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(response::addError);
         ex.getBindingResult().getGlobalErrors().forEach(response::addError);
 
-        return ResponseEntity.status(responseStatus).body(response);
+        return handleExceptionInternal(ex, response, headers, responseStatus, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+            WebRequest request) {
+        logger.error(ex.getMessage());
+
+        // Estado
+        HttpStatus responseStatus = HttpStatus.BAD_REQUEST;
+
+        // Crear respuesta
+        ErrorResponse response = new ErrorResponse();
+        response.setStatus(responseStatus.value());
+        response.setMessage("Error de Validación");
+
+        // Agregar errores al listado
+        ex.getBindingResult().getFieldErrors().forEach(response::addError);
+        ex.getBindingResult().getGlobalErrors().forEach(response::addError);
+
+        return handleExceptionInternal(ex, response, headers, responseStatus, request);
     }
 
 }
