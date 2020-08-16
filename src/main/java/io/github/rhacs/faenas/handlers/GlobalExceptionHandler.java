@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import io.github.rhacs.faenas.excepciones.ElementNotFoundException;
@@ -89,7 +90,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(response::addError);
         ex.getBindingResult().getGlobalErrors().forEach(response::addError);
 
-        return handleExceptionInternal(ex, response, headers, responseStatus, request);
+        return ResponseEntity.status(responseStatus).body(response);
     }
 
     @Override
@@ -109,7 +110,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(response::addError);
         ex.getBindingResult().getGlobalErrors().forEach(response::addError);
 
-        return handleExceptionInternal(ex, response, headers, responseStatus, request);
+        return ResponseEntity.status(responseStatus).body(response);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
+            HttpStatus status, WebRequest request) {
+        logger.error(ex.getMessage());
+
+        // Crear respuesta
+        ErrorResponse response = new ErrorResponse();
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setMessage("No se ha encontrado un controlador para las peticiones " + ex.getHttpMethod() + " sobre "
+                + ex.getRequestURL());
+
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
 }
