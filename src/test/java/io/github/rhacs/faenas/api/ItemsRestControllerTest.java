@@ -57,4 +57,17 @@ class ItemsRestControllerTest {
             .andExpect(jsonPath("$.proveedor.nombre").value("Huel, Upton and Simonis"));
     }
 
+    @Test
+    void obtenerItemShouldReturnAnError() throws Exception {
+        mvc
+            // Emular solicitud get
+            .perform(get("/api/items/{id}", 1000))
+            // Esperar que el estado del resultado sea HttpStatus.NOT_FOUND
+            .andExpect(status().isNotFound())
+            // Esperar que el tipo de contenido sea application/json
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            // Esperar que el json tenga un atributo "error.errors[0].rejectedValue" con el valor "1000"
+            .andExpect(jsonPath("$.error.errors[0].rejectedValue").value(1000));
+    }
+
 }
